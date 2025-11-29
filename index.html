@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Actual Rate - What You REALLY Make Per Hour</title>
+    <meta name="description" content="Find out your TRUE hourly wage after commute and unpaid time. The result might shock you.">
+    <meta property="og:title" content="My boss pays me $25/hr, but I actually make $14. Check yours.">
+    <meta property="og:description" content="Calculate your REAL hourly rate - the truth hurts.">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>💸 My Actual Rate</h1>
+            <p class="tagline">What you <strong>REALLY</strong> make per hour (the truth hurts)</p>
+        </header>
+
+        <main>
+            <div class="intro-box">
+                <p class="hook">Your boss says you make <strong>$X/hour</strong>.<br>
+                But after unpaid commute, lunch breaks, and hidden time...<br>
+                <span class="highlight">What do you ACTUALLY make?</span></p>
+            </div>
+
+            <form id="wage-calculator" class="calculator-form">
+                <div class="form-section">
+                    <h2>📊 Your "Official" Pay</h2>
+
+                    <div class="input-group">
+                        <label for="salary-type">I'm paid:</label>
+                        <select id="salary-type">
+                            <option value="hourly">Hourly</option>
+                            <option value="annual">Annual Salary</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group" id="hourly-input">
+                        <label for="hourly-rate">Hourly Rate:</label>
+                        <div class="input-with-prefix">
+                            <span class="prefix">$</span>
+                            <input type="number" id="hourly-rate" step="0.01" placeholder="25.00">
+                            <span class="suffix">/hour</span>
+                        </div>
+                    </div>
+
+                    <div class="input-group hidden" id="annual-input">
+                        <label for="annual-salary">Annual Salary:</label>
+                        <div class="input-with-prefix">
+                            <span class="prefix">$</span>
+                            <input type="number" id="annual-salary" step="1000" placeholder="52000">
+                            <span class="suffix">/year</span>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="hours-per-week">Hours worked per week:</label>
+                        <input type="number" id="hours-per-week" value="40" min="1" max="80">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="weeks-per-year">Weeks worked per year:</label>
+                        <input type="number" id="weeks-per-year" value="50" min="1" max="52">
+                        <small class="hint">Most people work 50 weeks (2 weeks vacation)</small>
+                    </div>
+                </div>
+
+                <div class="form-section unpaid-section">
+                    <h2>⏰ The Hidden Costs (Unpaid Time)</h2>
+
+                    <div class="input-group">
+                        <label for="commute-time">Daily commute (round trip):</label>
+                        <div class="input-with-prefix">
+                            <input type="number" id="commute-time" value="60" min="0" max="300">
+                            <span class="suffix">minutes</span>
+                        </div>
+                        <small class="hint">Average US commute: 54 minutes</small>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="unpaid-lunch">Unpaid lunch break:</label>
+                        <div class="input-with-prefix">
+                            <input type="number" id="unpaid-lunch" value="30" min="0" max="120">
+                            <span class="suffix">minutes</span>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="prep-time">Getting ready for work (daily):</label>
+                        <div class="input-with-prefix">
+                            <input type="number" id="prep-time" value="30" min="0" max="120">
+                            <span class="suffix">minutes</span>
+                        </div>
+                        <small class="hint">Showering, dressing professionally, packing lunch, etc.</small>
+                    </div>
+                </div>
+
+                <button type="submit" class="calculate-btn">Calculate My REAL Rate 💰</button>
+            </form>
+
+            <div id="results" class="results hidden">
+                <div class="comparison-box">
+                    <div class="comparison-card lie">
+                        <div class="card-header">
+                            <span class="icon">😐</span>
+                            <h3>What Your Boss Says</h3>
+                        </div>
+                        <div class="big-number" id="official-rate">$25.00</div>
+                        <p class="subtitle">per hour</p>
+                    </div>
+
+                    <div class="vs-divider">
+                        <span>VS</span>
+                    </div>
+
+                    <div class="comparison-card truth">
+                        <div class="card-header">
+                            <span class="icon">😤</span>
+                            <h3>What You ACTUALLY Make</h3>
+                        </div>
+                        <div class="big-number" id="actual-rate">$14.37</div>
+                        <p class="subtitle">per hour</p>
+                    </div>
+                </div>
+
+                <div class="impact-stats">
+                    <div class="stat-card">
+                        <div class="stat-value" id="percent-lost">42.5%</div>
+                        <div class="stat-label">Less than advertised</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="hours-unpaid">15.5</div>
+                        <div class="stat-label">Unpaid hours/week</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="yearly-lost">$11,375</div>
+                        <div class="stat-label">Lost annually</div>
+                    </div>
+                </div>
+
+                <div class="reality-check">
+                    <h3>💀 The Reality:</h3>
+                    <p id="reality-text">You spend <strong>55.5 hours per week</strong> on work-related activities, but only get paid for <strong>40 hours</strong>. That's <strong>15.5 hours of FREE LABOR</strong> every week.</p>
+                </div>
+
+                <div class="share-section">
+                    <h3>Share Your Truth:</h3>
+                    <div class="share-buttons">
+                        <button class="share-btn twitter" id="share-twitter">
+                            <span class="icon">🐦</span> Tweet This
+                        </button>
+                        <button class="share-btn reddit" id="share-reddit">
+                            <span class="icon">🔴</span> Post to Reddit
+                        </button>
+                        <button class="share-btn copy" id="copy-results">
+                            <span class="icon">📋</span> Copy Results
+                        </button>
+                    </div>
+                </div>
+
+                <button class="recalculate-btn" id="recalculate">Calculate Again</button>
+            </div>
+        </main>
+
+        <footer>
+            <p class="disclaimer">This calculator is for educational purposes. Results are estimates based on your inputs.</p>
+            <p class="cta">Know your worth. Negotiate better. Work smarter.</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

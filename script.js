@@ -1,0 +1,176 @@
+// DOM Elements
+const salaryType = document.getElementById('salary-type');
+const hourlyInput = document.getElementById('hourly-input');
+const annualInput = document.getElementById('annual-input');
+const hourlyRateInput = document.getElementById('hourly-rate');
+const annualSalaryInput = document.getElementById('annual-salary');
+const hoursPerWeek = document.getElementById('hours-per-week');
+const weeksPerYear = document.getElementById('weeks-per-year');
+const commuteTime = document.getElementById('commute-time');
+const unpaidLunch = document.getElementById('unpaid-lunch');
+const prepTime = document.getElementById('prep-time');
+
+const form = document.getElementById('wage-calculator');
+const results = document.getElementById('results');
+const officialRateEl = document.getElementById('official-rate');
+const actualRateEl = document.getElementById('actual-rate');
+const percentLostEl = document.getElementById('percent-lost');
+const hoursUnpaidEl = document.getElementById('hours-unpaid');
+const yearlyLostEl = document.getElementById('yearly-lost');
+const realityTextEl = document.getElementById('reality-text');
+
+const shareTwitterBtn = document.getElementById('share-twitter');
+const shareRedditBtn = document.getElementById('share-reddit');
+const copyResultsBtn = document.getElementById('copy-results');
+const recalculateBtn = document.getElementById('recalculate');
+
+// Toggle salary type input
+salaryType.addEventListener('change', () => {
+    if (salaryType.value === 'hourly') {
+        hourlyInput.classList.remove('hidden');
+        annualInput.classList.add('hidden');
+    } else {
+        hourlyInput.classList.add('hidden');
+        annualInput.classList.remove('hidden');
+    }
+});
+
+// Calculate wage
+form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    calculateWage();
+});
+
+function calculateWage() {
+    // Get inputs
+    const isHourly = salaryType.value === 'hourly';
+    let officialHourlyRate;
+
+    if (isHourly) {
+        officialHourlyRate = parseFloat(hourlyRateInput.value) || 0;
+    } else {
+        const annualSalary = parseFloat(annualSalaryInput.value) || 0;
+        const hours = parseFloat(hoursPerWeek.value) || 40;
+        const weeks = parseFloat(weeksPerYear.value) || 50;
+        const totalHours = hours * weeks;
+        officialHourlyRate = totalHours > 0 ? annualSalary / totalHours : 0;
+    }
+
+    const hours = parseFloat(hoursPerWeek.value) || 40;
+    const weeks = parseFloat(weeksPerYear.value) || 50;
+    const commute = parseFloat(commuteTime.value) || 0;
+    const lunch = parseFloat(unpaidLunch.value) || 0;
+    const prep = parseFloat(prepTime.value) || 0;
+
+    // Validation
+    if (officialHourlyRate <= 0 || hours <= 0 || weeks <= 0) {
+        alert('Please fill in all required fields with valid numbers.');
+        return;
+    }
+
+    // Calculate daily unpaid time (in hours)
+    const daysPerWeek = 5; // Assuming 5-day work week
+    const dailyUnpaidHours = (commute + lunch + prep) / 60;
+
+    // Calculate total hours per week (paid + unpaid)
+    const totalWeeklyHours = hours + (dailyUnpaidHours * daysPerWeek);
+
+    // Calculate actual hourly rate
+    const weeklyPay = officialHourlyRate * hours;
+    const actualHourlyRate = weeklyPay / totalWeeklyHours;
+
+    // Calculate stats
+    const unpaidHoursPerWeek = totalWeeklyHours - hours;
+    const percentLost = ((officialHourlyRate - actualHourlyRate) / officialHourlyRate) * 100;
+    const yearlyLost = (officialHourlyRate - actualHourlyRate) * totalWeeklyHours * weeks;
+
+    // Store results for sharing
+    window.calculationResults = {
+        officialRate: officialHourlyRate,
+        actualRate: actualHourlyRate,
+        percentLost: percentLost,
+        unpaidHours: unpaidHoursPerWeek,
+        yearlyLost: yearlyLost,
+        totalWeeklyHours: totalWeeklyHours,
+        paidHours: hours
+    };
+
+    // Display results
+    displayResults(officialHourlyRate, actualHourlyRate, percentLost, unpaidHoursPerWeek, yearlyLost, totalWeeklyHours, hours);
+}
+
+function displayResults(official, actual, percent, unpaidHours, yearlyLost, totalHours, paidHours) {
+    // Format numbers
+    officialRateEl.textContent = `$${official.toFixed(2)}`;
+    actualRateEl.textContent = `$${actual.toFixed(2)}`;
+    percentLostEl.textContent = `${percent.toFixed(1)}%`;
+    hoursUnpaidEl.textContent = unpaidHours.toFixed(1);
+    yearlyLostEl.textContent = `$${yearlyLost.toLocaleString('en-US', { maximumFractionDigits: 0 })}`;
+
+    // Reality text
+    realityTextEl.innerHTML = `You spend <strong>${totalHours.toFixed(1)} hours per week</strong> on work-related activities, but only get paid for <strong>${paidHours} hours</strong>. That's <strong>${unpaidHours.toFixed(1)} hours of FREE LABOR</strong> every week.`;
+
+    // Scroll to results
+    results.classList.remove('hidden');
+    results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// Share functionality
+shareTwitterBtn.addEventListener('click', () => {
+    const r = window.calculationResults;
+    const text = `My boss pays me $${r.officialRate.toFixed(2)}/hr, but after commute + unpaid time, I actually make $${r.actualRate.toFixed(2)}/hr. That's ${r.percentLost.toFixed(1)}% less! Check yours at MyActualRate.com`;
+    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+    window.open(url, '_blank');
+});
+
+shareRedditBtn.addEventListener('click', () => {
+    const r = window.calculationResults;
+    const title = `I calculated my REAL hourly wage and I'm losing ${r.percentLost.toFixed(1)}% to unpaid time`;
+    const text = `My employer says I make $${r.officialRate.toFixed(2)}/hour, but after factoring in my commute (unpaid), lunch break (unpaid), and getting ready for work, I actually make $${r.actualRate.toFixed(2)}/hour.\n\nThat's ${r.unpaidHours.toFixed(1)} hours of free labor every week, costing me $${r.yearlyLost.toLocaleString('en-US', { maximumFractionDigits: 0 })} per year.\n\nCalculate yours: MyActualRate.com`;
+    const url = `https://reddit.com/submit?title=${encodeURIComponent(title)}&text=${encodeURIComponent(text)}`;
+    window.open(url, '_blank');
+});
+
+copyResultsBtn.addEventListener('click', () => {
+    const r = window.calculationResults;
+    const text = `💸 MY ACTUAL RATE RESULTS 💸
+
+Official Rate: $${r.officialRate.toFixed(2)}/hr
+ACTUAL Rate: $${r.actualRate.toFixed(2)}/hr
+
+Lost to unpaid time: ${r.percentLost.toFixed(1)}%
+Unpaid hours per week: ${r.unpaidHours.toFixed(1)} hours
+Lost annually: $${r.yearlyLost.toLocaleString('en-US', { maximumFractionDigits: 0 })}
+
+I spend ${r.totalWeeklyHours.toFixed(1)} hours/week on work but only get paid for ${r.paidHours} hours.
+
+Calculate yours: MyActualRate.com`;
+
+    navigator.clipboard.writeText(text).then(() => {
+        const originalText = copyResultsBtn.innerHTML;
+        copyResultsBtn.innerHTML = '<span class="icon">✅</span> Copied!';
+        copyResultsBtn.style.background = '#00cc66';
+        setTimeout(() => {
+            copyResultsBtn.innerHTML = originalText;
+            copyResultsBtn.style.background = '';
+        }, 2000);
+    }).catch(() => {
+        alert('Copy failed. Please copy manually.');
+    });
+});
+
+recalculateBtn.addEventListener('click', () => {
+    results.classList.add('hidden');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// Auto-fill with example on load for demo purposes
+window.addEventListener('load', () => {
+    // Pre-fill with realistic example (optional - remove for production)
+    // hourlyRateInput.value = '25.00';
+    // hoursPerWeek.value = '40';
+    // weeksPerYear.value = '50';
+    // commuteTime.value = '60';
+    // unpaidLunch.value = '30';
+    // prepTime.value = '30';
+});
