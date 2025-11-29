@@ -14,8 +14,8 @@
 <body>
     <div class="container">
         <header>
-            <h1>💸 My Actual Rate</h1>
-            <p class="tagline">What you <strong>REALLY</strong> make per hour (the truth hurts)</p>
+            <h1>My Actual Rate</h1>
+            <p class="tagline">Calculate your real hourly wage after unpaid time</p>
         </header>
 
         <main>
@@ -27,7 +27,7 @@
 
             <form id="wage-calculator" class="calculator-form">
                 <div class="form-section">
-                    <h2>📊 Your "Official" Pay</h2>
+                    <h2>Your Salary Information</h2>
 
                     <div class="input-group">
                         <label for="salary-type">I'm paid:</label>
@@ -68,7 +68,7 @@
                 </div>
 
                 <div class="form-section unpaid-section">
-                    <h2>⏰ The Hidden Costs (Unpaid Time)</h2>
+                    <h2>Unpaid Time</h2>
 
                     <div class="input-group">
                         <label for="commute-time">Daily commute (round trip):</label>
@@ -97,15 +97,14 @@
                     </div>
                 </div>
 
-                <button type="submit" class="calculate-btn">Calculate My REAL Rate 💰</button>
+                <button type="submit" class="calculate-btn">Calculate My Actual Rate</button>
             </form>
 
             <div id="results" class="results hidden">
                 <div class="comparison-box">
                     <div class="comparison-card lie">
                         <div class="card-header">
-                            <span class="icon">😐</span>
-                            <h3>What Your Boss Says</h3>
+                            <h3>Stated Hourly Rate</h3>
                         </div>
                         <div class="big-number" id="official-rate">$25.00</div>
                         <p class="subtitle">per hour</p>
@@ -117,8 +116,7 @@
 
                     <div class="comparison-card truth">
                         <div class="card-header">
-                            <span class="icon">😤</span>
-                            <h3>What You ACTUALLY Make</h3>
+                            <h3>Actual Hourly Rate</h3>
                         </div>
                         <div class="big-number" id="actual-rate">$14.37</div>
                         <p class="subtitle">per hour</p>
@@ -141,7 +139,7 @@
                 </div>
 
                 <div class="reality-check">
-                    <h3>💀 The Reality:</h3>
+                    <h3>The Reality:</h3>
                     <p id="reality-text">You spend <strong>55.5 hours per week</strong> on work-related activities, but only get paid for <strong>40 hours</strong>. That's <strong>15.5 hours of FREE LABOR</strong> every week.</p>
                 </div>
 
@@ -149,13 +147,13 @@
                     <h3>Share Your Truth:</h3>
                     <div class="share-buttons">
                         <button class="share-btn twitter" id="share-twitter">
-                            <span class="icon">🐦</span> Tweet This
+                            Share on Twitter
                         </button>
                         <button class="share-btn reddit" id="share-reddit">
-                            <span class="icon">🔴</span> Post to Reddit
+                            Share on Reddit
                         </button>
                         <button class="share-btn copy" id="copy-results">
-                            <span class="icon">📋</span> Copy Results
+                            Copy Results
                         </button>
                     </div>
                 </div>
