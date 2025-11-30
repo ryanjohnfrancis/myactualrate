@@ -1,4 +1,5 @@
 // DOM Elements
+const currencySelect = document.getElementById('currency');
 const salaryType = document.getElementById('salary-type');
 const hourlyInput = document.getElementById('hourly-input');
 const annualInput = document.getElementById('annual-input');
@@ -9,6 +10,7 @@ const weeksPerYear = document.getElementById('weeks-per-year');
 const commuteTime = document.getElementById('commute-time');
 const unpaidLunch = document.getElementById('unpaid-lunch');
 const prepTime = document.getElementById('prep-time');
+const commuteHint = document.getElementById('commute-hint');
 
 const form = document.getElementById('wage-calculator');
 const results = document.getElementById('results');
@@ -20,9 +22,40 @@ const yearlyLostEl = document.getElementById('yearly-lost');
 const realityTextEl = document.getElementById('reality-text');
 
 const shareTwitterBtn = document.getElementById('share-twitter');
+const shareLinkedInBtn = document.getElementById('share-linkedin');
 const shareRedditBtn = document.getElementById('share-reddit');
 const copyResultsBtn = document.getElementById('copy-results');
 const recalculateBtn = document.getElementById('recalculate');
+
+// Currency symbol storage
+let currentCurrencySymbol = '$';
+
+// Currency selector change
+currencySelect.addEventListener('change', () => {
+    const selected = currencySelect.options[currencySelect.selectedIndex];
+    currentCurrencySymbol = selected.getAttribute('data-symbol');
+    const avgCommute = selected.getAttribute('data-commute');
+
+    // Update commute hint
+    const regionNames = {
+        'USD': 'US',
+        'GBP': 'UK',
+        'EUR': 'EU',
+        'CAD': 'Canadian',
+        'AUD': 'Australian',
+        'INR': 'Indian'
+    };
+    const region = regionNames[selected.value] || '';
+    commuteHint.textContent = `Average ${region} commute: ${avgCommute} minutes`;
+
+    // Update currency symbols in form
+    document.querySelectorAll('.prefix').forEach(el => {
+        if (el.textContent === '$' || el.textContent === '£' || el.textContent === '€' ||
+            el.textContent === 'C$' || el.textContent === 'A$' || el.textContent === '₹') {
+            el.textContent = currentCurrencySymbol;
+        }
+    });
+});
 
 // Toggle salary type input
 salaryType.addEventListener('change', () => {
@@ -100,12 +133,12 @@ function calculateWage() {
 }
 
 function displayResults(official, actual, percent, unpaidHours, yearlyLost, totalHours, paidHours) {
-    // Format numbers
-    officialRateEl.textContent = `$${official.toFixed(2)}`;
-    actualRateEl.textContent = `$${actual.toFixed(2)}`;
+    // Format numbers with current currency
+    officialRateEl.textContent = `${currentCurrencySymbol}${official.toFixed(2)}`;
+    actualRateEl.textContent = `${currentCurrencySymbol}${actual.toFixed(2)}`;
     percentLostEl.textContent = `${percent.toFixed(1)}%`;
     hoursUnpaidEl.textContent = unpaidHours.toFixed(1);
-    yearlyLostEl.textContent = `$${yearlyLost.toLocaleString('en-US', { maximumFractionDigits: 0 })}`;
+    yearlyLostEl.textContent = `${currentCurrencySymbol}${yearlyLost.toLocaleString('en-US', { maximumFractionDigits: 0 })}`;
 
     // Reality text
     realityTextEl.innerHTML = `You spend <strong>${totalHours.toFixed(1)} hours per week</strong> on work-related activities, but only get paid for <strong>${paidHours} hours</strong>. That's <strong>${unpaidHours.toFixed(1)} hours of FREE LABOR</strong> every week.`;
@@ -118,15 +151,21 @@ function displayResults(official, actual, percent, unpaidHours, yearlyLost, tota
 // Share functionality
 shareTwitterBtn.addEventListener('click', () => {
     const r = window.calculationResults;
-    const text = `My boss pays me $${r.officialRate.toFixed(2)}/hr, but after commute + unpaid time, I actually make $${r.actualRate.toFixed(2)}/hr. That's ${r.percentLost.toFixed(1)}% less! Check yours at MyActualRate.com`;
+    const text = `My boss pays me ${currentCurrencySymbol}${r.officialRate.toFixed(2)}/hr, but after commute + unpaid time, I actually make ${currentCurrencySymbol}${r.actualRate.toFixed(2)}/hr. That's ${r.percentLost.toFixed(1)}% less! Check yours at MyActualRate.com`;
     const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+    window.open(url, '_blank');
+});
+
+shareLinkedInBtn.addEventListener('click', () => {
+    const r = window.calculationResults;
+    const url = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent('https://myactualrate.com')}`;
     window.open(url, '_blank');
 });
 
 shareRedditBtn.addEventListener('click', () => {
     const r = window.calculationResults;
     const title = `I calculated my REAL hourly wage and I'm losing ${r.percentLost.toFixed(1)}% to unpaid time`;
-    const text = `My employer says I make $${r.officialRate.toFixed(2)}/hour, but after factoring in my commute (unpaid), lunch break (unpaid), and getting ready for work, I actually make $${r.actualRate.toFixed(2)}/hour.\n\nThat's ${r.unpaidHours.toFixed(1)} hours of free labor every week, costing me $${r.yearlyLost.toLocaleString('en-US', { maximumFractionDigits: 0 })} per year.\n\nCalculate yours: MyActualRate.com`;
+    const text = `My employer says I make ${currentCurrencySymbol}${r.officialRate.toFixed(2)}/hour, but after factoring in my commute (unpaid), lunch break (unpaid), and getting ready for work, I actually make ${currentCurrencySymbol}${r.actualRate.toFixed(2)}/hour.\n\nThat's ${r.unpaidHours.toFixed(1)} hours of free labor every week, costing me ${currentCurrencySymbol}${r.yearlyLost.toLocaleString('en-US', { maximumFractionDigits: 0 })} per year.\n\nCalculate yours: MyActualRate.com`;
     const url = `https://reddit.com/submit?title=${encodeURIComponent(title)}&text=${encodeURIComponent(text)}`;
     window.open(url, '_blank');
 });
@@ -135,12 +174,12 @@ copyResultsBtn.addEventListener('click', () => {
     const r = window.calculationResults;
     const text = `💸 MY ACTUAL RATE RESULTS 💸
 
-Official Rate: $${r.officialRate.toFixed(2)}/hr
-ACTUAL Rate: $${r.actualRate.toFixed(2)}/hr
+Official Rate: ${currentCurrencySymbol}${r.officialRate.toFixed(2)}/hr
+ACTUAL Rate: ${currentCurrencySymbol}${r.actualRate.toFixed(2)}/hr
 
 Lost to unpaid time: ${r.percentLost.toFixed(1)}%
 Unpaid hours per week: ${r.unpaidHours.toFixed(1)} hours
-Lost annually: $${r.yearlyLost.toLocaleString('en-US', { maximumFractionDigits: 0 })}
+Lost annually: ${currentCurrencySymbol}${r.yearlyLost.toLocaleString('en-US', { maximumFractionDigits: 0 })}
 
 I spend ${r.totalWeeklyHours.toFixed(1)} hours/week on work but only get paid for ${r.paidHours} hours.
 

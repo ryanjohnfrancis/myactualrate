@@ -11,6 +11,46 @@
     <meta property="og:image" content="https://myactualrate.com/og-image.jpg">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is a true hourly wage?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Your true hourly wage (also called real hourly wage or actual hourly rate) is the amount you actually earn per hour when you account for all time spent on work-related activities, not just your paid working hours. This includes unpaid commute time, lunch breaks, getting ready for work, and any other time dedicated to your job."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why doesn't my employer count commute time as work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Under federal labor law, employers are generally not required to pay for commute time from home to work. However, this unpaid time still represents hours of your day dedicated to your job. By calculating your true hourly wage, you can see how much this unpaid time actually reduces your effective earnings."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How accurate is this calculator?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "This calculator provides an estimate based on the information you provide. It accounts for unpaid commute time, lunch breaks, and work preparation time to show your effective hourly rate. The calculation divides your total weekly pay by the total hours you spend on work-related activities each week."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How much does the average American lose to unpaid time?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "With an average commute of 54 minutes daily and typical unpaid lunch breaks, most American workers spend 10-15 additional hours per week on work-related activities. For someone earning $25/hour working 40 hours per week, this can represent over $10,000 in lost annual earnings."
+          }
+        }
+      ]
+    }
+    </script>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -39,6 +79,18 @@
             <form id="wage-calculator" class="calculator-form">
                 <div class="form-section">
                     <h2>Your Salary Information</h2>
+
+                    <div class="input-group">
+                        <label for="currency">Currency:</label>
+                        <select id="currency">
+                            <option value="USD" data-symbol="$" data-commute="54">USD ($) - United States</option>
+                            <option value="GBP" data-symbol="£" data-commute="59">GBP (£) - United Kingdom</option>
+                            <option value="EUR" data-symbol="€" data-commute="51">EUR (€) - European Union</option>
+                            <option value="CAD" data-symbol="C$" data-commute="52">CAD (C$) - Canada</option>
+                            <option value="AUD" data-symbol="A$" data-commute="66">AUD (A$) - Australia</option>
+                            <option value="INR" data-symbol="₹" data-commute="70">INR (₹) - India</option>
+                        </select>
+                    </div>
 
                     <div class="input-group">
                         <label for="salary-type">I'm paid:</label>
@@ -87,7 +139,7 @@
                             <input type="number" id="commute-time" value="60" min="0" max="300">
                             <span class="suffix">minutes</span>
                         </div>
-                        <small class="hint">Average US commute: 54 minutes</small>
+                        <small class="hint" id="commute-hint">Average commute: 54 minutes</small>
                     </div>
 
                     <div class="input-group">
@@ -159,6 +211,9 @@
                     <div class="share-buttons">
                         <button class="share-btn twitter" id="share-twitter">
                             Share on Twitter
+                        </button>
+                        <button class="share-btn linkedin" id="share-linkedin">
+                            Share on LinkedIn
                         </button>
                         <button class="share-btn reddit" id="share-reddit">
                             Share on Reddit
