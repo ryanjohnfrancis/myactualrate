@@ -65,6 +65,26 @@ main {
     margin-bottom: 35px;
 }
 
+.content-section {
+    background: var(--white);
+    padding: 25px;
+    margin-bottom: 35px;
+    border: 1px solid var(--border);
+}
+
+.content-section h2 {
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+    color: var(--text);
+    font-weight: 700;
+}
+
+.content-section p {
+    margin-bottom: 12px;
+    line-height: 1.7;
+    color: var(--text);
+}
+
 .hook {
     font-size: 1.1rem;
     line-height: 1.7;
@@ -357,6 +377,39 @@ main {
 .recalculate-btn:hover {
     background: var(--primary);
     color: var(--white);
+}
+
+.faq-section {
+    background: var(--light-bg);
+    padding: 30px;
+    margin-top: 40px;
+    border-top: 3px solid var(--border);
+}
+
+.faq-section h2 {
+    font-size: 1.6rem;
+    margin-bottom: 25px;
+    color: var(--text);
+    font-weight: 700;
+}
+
+.faq-item {
+    background: var(--white);
+    padding: 20px;
+    margin-bottom: 15px;
+    border-left: 4px solid var(--primary);
+}
+
+.faq-item h3 {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    color: var(--primary-dark);
+    font-weight: 700;
+}
+
+.faq-item p {
+    line-height: 1.7;
+    color: var(--text);
 }
 
 footer {
