@@ -203,13 +203,14 @@ recalculateBtn.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 
-// Auto-fill with example on load for demo purposes
+// Initialize currency symbols on page load
 window.addEventListener('load', () => {
-    // Pre-fill with realistic example (optional - remove for production)
-    // hourlyRateInput.value = '25.00';
-    // hoursPerWeek.value = '40';
-    // weeksPerYear.value = '50';
-    // commuteTime.value = '60';
-    // unpaidLunch.value = '30';
-    // prepTime.value = '30';
+    // Set initial currency symbol from selected option
+    const selected = currencySelect.options[currencySelect.selectedIndex];
+    currentCurrencySymbol = selected.getAttribute('data-symbol');
+
+    // Update all prefix symbols to match
+    document.querySelectorAll('.prefix').forEach(el => {
+        el.textContent = currentCurrencySymbol;
+    });
 });
