@@ -48,12 +48,9 @@ currencySelect.addEventListener('change', () => {
     const region = regionNames[selected.value] || '';
     commuteHint.textContent = `Average ${region} commute: ${avgCommute} minutes`;
 
-    // Update currency symbols in form
+    // Update all currency symbols in form
     document.querySelectorAll('.prefix').forEach(el => {
-        if (el.textContent === '$' || el.textContent === '£' || el.textContent === '€' ||
-            el.textContent === 'C$' || el.textContent === 'A$' || el.textContent === '₹') {
-            el.textContent = currentCurrencySymbol;
-        }
+        el.textContent = currentCurrencySymbol;
     });
 });
 
