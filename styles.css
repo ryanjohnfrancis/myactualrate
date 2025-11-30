@@ -437,6 +437,23 @@ footer {
     border-top: 1px solid var(--border);
 }
 
+.methodology ul {
+    list-style-type: disc;
+}
+
+.methodology a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 500;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+}
+
+.methodology a:hover {
+    color: var(--primary-dark);
+    border-bottom-color: var(--primary-dark);
+}
+
 .methodology-link {
     color: var(--primary);
     text-decoration: underline;

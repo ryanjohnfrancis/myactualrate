@@ -151,7 +151,7 @@ function displayResults(official, actual, percent, unpaidHours, yearlyLost, tota
 // Share functionality
 shareTwitterBtn.addEventListener('click', () => {
     const r = window.calculationResults;
-    const text = `My boss pays me ${currentCurrencySymbol}${r.officialRate.toFixed(2)}/hr, but after commute + unpaid time, I actually make ${currentCurrencySymbol}${r.actualRate.toFixed(2)}/hr. That's ${r.percentLost.toFixed(1)}% less! Check yours at MyActualRate.com`;
+    const text = `I'm losing ${currentCurrencySymbol}${r.yearlyLost.toLocaleString('en-US', { maximumFractionDigits: 0 })} per year in unpaid work time. My actual hourly rate is ${currentCurrencySymbol}${r.actualRate.toFixed(2)}, not ${currentCurrencySymbol}${r.officialRate.toFixed(2)}. Calculate yours: MyActualRate.com`;
     const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
     window.open(url, '_blank');
 });
@@ -164,8 +164,10 @@ shareLinkedInBtn.addEventListener('click', () => {
 
 shareRedditBtn.addEventListener('click', () => {
     const r = window.calculationResults;
-    const title = `I calculated my REAL hourly wage and I'm losing ${r.percentLost.toFixed(1)}% to unpaid time`;
-    const text = `My employer says I make ${currentCurrencySymbol}${r.officialRate.toFixed(2)}/hour, but after factoring in my commute (unpaid), lunch break (unpaid), and getting ready for work, I actually make ${currentCurrencySymbol}${r.actualRate.toFixed(2)}/hour.\n\nThat's ${r.unpaidHours.toFixed(1)} hours of free labor every week, costing me ${currentCurrencySymbol}${r.yearlyLost.toLocaleString('en-US', { maximumFractionDigits: 0 })} per year.\n\nCalculate yours: MyActualRate.com`;
+    const title = `I'm losing ${currentCurrencySymbol}${r.yearlyLost.toLocaleString('en-US', { maximumFractionDigits: 0 })} per year in unpaid work time`;
+    const text = `I calculated my REAL hourly wage and discovered I'm losing ${currentCurrencySymbol}${r.yearlyLost.toLocaleString('en-US', { maximumFractionDigits: 0 })} annually to unpaid time.
+
+My employer says I make ${currentCurrencySymbol}${r.officialRate.toFixed(2)}/hour, but after factoring in my commute (unpaid), lunch break (unpaid), and getting ready for work, I actually make ${currentCurrencySymbol}${r.actualRate.toFixed(2)}/hour.\n\nThat's ${r.unpaidHours.toFixed(1)} hours of free labor every week, costing me ${currentCurrencySymbol}${r.yearlyLost.toLocaleString('en-US', { maximumFractionDigits: 0 })} per year.\n\nCalculate yours: MyActualRate.com`;
     const url = `https://reddit.com/submit?title=${encodeURIComponent(title)}&text=${encodeURIComponent(text)}`;
     window.open(url, '_blank');
 });
@@ -174,12 +176,13 @@ copyResultsBtn.addEventListener('click', () => {
     const r = window.calculationResults;
     const text = `💸 MY ACTUAL RATE RESULTS 💸
 
+I'm losing ${currentCurrencySymbol}${r.yearlyLost.toLocaleString('en-US', { maximumFractionDigits: 0 })} per year in unpaid work time.
+
 Official Rate: ${currentCurrencySymbol}${r.officialRate.toFixed(2)}/hr
 ACTUAL Rate: ${currentCurrencySymbol}${r.actualRate.toFixed(2)}/hr
 
 Lost to unpaid time: ${r.percentLost.toFixed(1)}%
 Unpaid hours per week: ${r.unpaidHours.toFixed(1)} hours
-Lost annually: ${currentCurrencySymbol}${r.yearlyLost.toLocaleString('en-US', { maximumFractionDigits: 0 })}
 
 I spend ${r.totalWeeklyHours.toFixed(1)} hours/week on work but only get paid for ${r.paidHours} hours.
 
