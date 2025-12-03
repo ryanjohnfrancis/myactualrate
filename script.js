@@ -27,8 +27,16 @@ const shareRedditBtn = document.getElementById('share-reddit');
 const copyResultsBtn = document.getElementById('copy-results');
 const recalculateBtn = document.getElementById('recalculate');
 
+// Time cost calculator elements
+const purchasePriceInput = document.getElementById('purchase-price');
+const workHoursDisplay = document.getElementById('work-hours');
+const coffeeHoursDisplay = document.getElementById('coffee-hours');
+const dinnerHoursDisplay = document.getElementById('dinner-hours');
+const expenseHoursDisplay = document.getElementById('expense-hours');
+
 // Currency symbol storage
 let currentCurrencySymbol = '$';
+let currentActualRate = 0;
 
 // Currency selector change
 currencySelect.addEventListener('change', () => {
@@ -48,7 +56,7 @@ currencySelect.addEventListener('change', () => {
     const region = regionNames[selected.value] || '';
     commuteHint.textContent = `Average ${region} commute: ${avgCommute} minutes`;
 
-    // Update all currency symbols in form
+    // Update all currency symbols in form and time cost calculator
     document.querySelectorAll('.prefix').forEach(el => {
         el.textContent = currentCurrencySymbol;
     });
@@ -140,10 +148,64 @@ function displayResults(official, actual, percent, unpaidHours, yearlyLost, tota
     // Reality text
     realityTextEl.innerHTML = `You spend <strong>${totalHours.toFixed(1)} hours per week</strong> on work-related activities, but only get paid for <strong>${paidHours} hours</strong>. That's <strong>${unpaidHours.toFixed(1)} hours of FREE LABOR</strong> every week.`;
 
+    // Store actual rate for time cost calculator
+    currentActualRate = actual;
+
+    // Update time cost examples
+    updateTimeCostExamples();
+
     // Scroll to results
     results.classList.remove('hidden');
     results.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
+
+// Time cost calculator functions
+function calculateWorkHours(price) {
+    if (currentActualRate <= 0 || !price) return 0;
+    return price / currentActualRate;
+}
+
+function formatTimeDisplay(hours) {
+    if (hours < 1) {
+        const minutes = Math.round(hours * 60);
+        return `${minutes} ${minutes === 1 ? 'minute' : 'minutes'}`;
+    } else if (hours < 24) {
+        return hours.toFixed(1);
+    } else {
+        const days = Math.floor(hours / 8); // Assume 8-hour workday
+        const remainingHours = (hours % 8).toFixed(1);
+        return `${days} ${days === 1 ? 'day' : 'days'}, ${remainingHours} hours`;
+    }
+}
+
+function updateTimeCostExamples() {
+    // Update examples
+    const coffeeHours = calculateWorkHours(5);
+    const dinnerHours = calculateWorkHours(100);
+    const expenseHours = calculateWorkHours(1000);
+
+    coffeeHoursDisplay.textContent = formatTimeDisplay(coffeeHours);
+    dinnerHoursDisplay.textContent = dinnerHours.toFixed(1);
+    expenseHoursDisplay.textContent = expenseHours.toFixed(1);
+
+    // Update custom input if it has a value
+    if (purchasePriceInput.value) {
+        updateCustomTimeCost();
+    }
+}
+
+function updateCustomTimeCost() {
+    const price = parseFloat(purchasePriceInput.value);
+    if (price && price > 0 && currentActualRate > 0) {
+        const hours = calculateWorkHours(price);
+        workHoursDisplay.textContent = hours.toFixed(1);
+    } else {
+        workHoursDisplay.textContent = '--';
+    }
+}
+
+// Purchase price input listener
+purchasePriceInput.addEventListener('input', updateCustomTimeCost);
 
 // Share functionality
 shareTwitterBtn.addEventListener('click', () => {

@@ -206,6 +206,27 @@
                     <p id="reality-text">You spend <strong>55.5 hours per week</strong> on work-related activities, but only get paid for <strong>40 hours</strong>. That's <strong>15.5 hours of FREE LABOR</strong> every week.</p>
                 </div>
 
+                <div class="time-cost-section">
+                    <h3>What Does This Really Cost in Your Time?</h3>
+                    <p class="time-cost-intro">See how many hours of your ACTUAL work time any purchase requires:</p>
+                    <div class="time-cost-calculator">
+                        <div class="input-with-prefix">
+                            <span class="prefix">$</span>
+                            <input type="number" id="purchase-price" placeholder="50.00" step="0.01" min="0">
+                        </div>
+                        <span class="equals">=</span>
+                        <div class="time-cost-result">
+                            <span id="work-hours" class="work-hours-value">--</span>
+                            <span class="work-hours-label">hours of your real work time</span>
+                        </div>
+                    </div>
+                    <div class="time-cost-examples">
+                        <p class="example-item"><strong>$5 coffee</strong> = <span id="coffee-hours">--</span> minutes</p>
+                        <p class="example-item"><strong>$100 dinner</strong> = <span id="dinner-hours">--</span> hours</p>
+                        <p class="example-item"><strong>$1,000 expense</strong> = <span id="expense-hours">--</span> hours</p>
+                    </div>
+                </div>
+
                 <div class="share-section">
                     <h3>Share Your Truth:</h3>
                     <div class="share-buttons">
