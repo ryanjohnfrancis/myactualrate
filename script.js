@@ -154,6 +154,12 @@ function displayResults(official, actual, percent, unpaidHours, yearlyLost, tota
     // Update time cost examples
     updateTimeCostExamples();
 
+    // Update currency symbol in time cost calculator (it's hidden until results show)
+    const timeCostPrefix = document.querySelector('.time-cost-calculator .prefix');
+    if (timeCostPrefix) {
+        timeCostPrefix.textContent = currentCurrencySymbol;
+    }
+
     // Scroll to results
     results.classList.remove('hidden');
     results.scrollIntoView({ behavior: 'smooth', block: 'start' });
